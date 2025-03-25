@@ -1,8 +1,10 @@
-require('dotenv').config;
+require('dotenv').config({ path: 'C:\\Users\\actua\\OneDrive\\Desktop\\Braincleaner\\.env' });
 console.log(process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY, process.env.AWS_S3_BUCKET_NAME);
 const Creatomate = require('creatomate');
 // Replace the fetch import with this dynamic import
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
+const { TextSlideUpLineByLine } = require('creatomate');
 
 const {
     Polly,
@@ -22,7 +24,7 @@ const {
 } = require('@aws-sdk/s3-request-presigner');
 
 // Test script - a fun example about space exploration
-const TEST_SCRIPT_LOWER = `Yeeked rn off of 11 yerks feeling super. Feeling like chief yeef.`;
+const TEST_SCRIPT_LOWER = `Hello there, my name is Conor.`;
 const TEST_SCRIPT = TEST_SCRIPT_LOWER.toUpperCase();
 
 if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY || !process.env.AWS_S3_BUCKET_NAME) {
@@ -251,8 +253,8 @@ async function run() {
 
             new Creatomate.Audio({
                 source: 'https://brainclnr.s3.us-east-2.amazonaws.com/v%C3%B8j%2C+narvent%2C+.diedlonely+-+memory+reboot+(ambient+remix)-yt.savetube.me.mp3', // Replace with your music URL
-                track: 2,
-                time: 0,
+                track: 4,
+                start: 22.5,
                 duration: totalDuration,
                 loop: true  // Ensures the music loops if it’s shorter than the video
             }),
@@ -283,16 +285,8 @@ async function run() {
                     strokeColor: '#000000',
                     strokeWidth: '2',
                     borderRadius: '10',
-                    // Add keyframes to animate the x position (horizontal slide)
-                    keyframes: {
-                        // Normalized time values from 0 (start) to 1 (end) of the element's duration
-                        x: [
-                            { time: 0, value: '-100%' }, // Start off-screen left
-                            { time: 0.2, value: '50%' },   // Slide to center by 20% of duration
-                            { time: 0.8, value: '50%' },   // Stay centered until 80% of duration
-                            { time: 1, value: '150%' }     // Slide off-screen right at end
-                        ]
-                    }
+                    enter: new TextSlideUpLineByLine({ duration: 0.06 }),
+                    exit: new TextSlideUpLineByLine({ duration: 0.06 }),
                 })
             ))
         ],
@@ -406,8 +400,8 @@ async function generateVideo(script) {
 
             new Creatomate.Audio({
                 source: 'https://brainclnr.s3.us-east-2.amazonaws.com/v%C3%B8j%2C+narvent%2C+.diedlonely+-+memory+reboot+(ambient+remix)-yt.savetube.me.mp3', // Replace with your music URL
-                track: 2,
-                time: 0,
+                track: 4,
+                start: 22.5,
                 duration: totalDuration,
                 loop: true  // Ensures the music loops if it’s shorter than the video
             }),
@@ -439,8 +433,10 @@ async function generateVideo(script) {
                     strokeColor: '#000000',
                     strokeWidth: '2',
                     borderRadius: '10',
+                    enter: new TextSlideUpLineByLine({duration: 0.06}),
+                    exit: new TextSlideUpLineByLine({ duration: 0.06 }),
                 })
-            )),
+            ))
         ],
     });
 
