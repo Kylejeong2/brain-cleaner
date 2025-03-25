@@ -3,7 +3,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f5f5;
   position: relative;
 }
 
@@ -12,73 +11,182 @@
   top: 20px;
   left: 20px;
   padding: 8px 16px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 20px;
   cursor: pointer;
   font-size: 16px;
-  color: #333;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  background: transparent;
+  color: white;
+  text-decoration: none;
+  border: 2px solid #be9ecb;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-family: "Overpass Mono", monospace;
 }
 
 .back-button:hover {
-  background: #f0f0f0;
+  background: #be9ecb;
+  color: #22143a;
   transform: translateX(-2px);
 }
 
-.login-form-container {
-  color: black; 
-  background: white;
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login-box {
+  background: #ffffff;
   padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 360px;
 }
 
-.login-form-container h1 {
+.login-box h2 {
+  color: #333;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   font-size: 1.8rem;
-  line-height: 1.2;
-  white-space: nowrap;
+  font-weight: 500;
 }
 
-.form-group {
-  margin-bottom: 1rem;
+.google-login-container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
+.google-login-container > div {
+  width: 100% !important;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.google-login-container iframe {
+  scale: 1.15;
 }
 
-.login-btn {
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem auto;
+  width: 268px;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.separator span {
+  padding: 0 10px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.login-form {
+  width: 268px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-form .form-group {
+  width: 110%;
+}
+
+.login-form input {
   width: 100%;
   padding: 0.75rem;
-  background-color: #6e8efb;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #333;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
 }
 
-.form-group input::placeholder {
-  color: #aaa; 
-  opacity: 1;  
+.login-form input::placeholder {
+  color: #999;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #be9ecb;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.login-form button[type="submit"] {
+  width: 120%;
+  padding: 0.75rem;
+  background: transparent;
+  color: #22143a;
+  border: 2px solid #22143a;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-form button[type="submit"]:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.login-form button[type="submit"]:disabled {
+  background: #e0e0e0;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  width: 268px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .auth-switch {
   margin-top: 1.5rem;
   text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  width: 268px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.auth-switch button {
+  background: none;
+  border: none;
+  color: #4a90e2;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+.auth-switch button:hover {
+  color: #357abd;
+  text-decoration: none;
+}
+
+.auth-switch button:focus {
+  outline: none;
 }
 
 .auth-switch p {
@@ -96,13 +204,5 @@
 }
 
 .text-button:hover {
-  text-decoration: underline;
-}
-
-.error-message {
-  color: #ff0000;
-  text-align: center;
-  font-weight: bold;
-  margin: 0.5rem 0;
-  padding: 0.5rem;
+  text-decoration: none;
 }

@@ -1,6 +1,7 @@
 const multer = require("multer");
 const fetch = require("node-fetch");
 const { generateVideoScript } = require("./scriptGeneration.controller");
+const { generateVideo } = require("./scriptToVideoController");
 
 
 // Set up Multer for file uploads (stores files in memory)
@@ -99,76 +100,41 @@ exports.processPdf = async (req, res) => {
             }
             if (status === "Succeeded") {
                 console.log("Task succeeded:", taskData);
-    try {
-        // Send the taskData to OpenAI for script generation
-        const script = await generateVideoScript(taskData);
-        
-        return res.status(200).json({
-            message: 'PDF processing and script generation completed successfully',
-            script: script, // openAI part
-            chunkr_data: taskData
-        });
-    } catch (error) {
-        console.error('Error generating script:', error);
-        return res.status(500).json({ 
-            error: 'Script generation failed',
-            chunkr_data: taskData  // Still return Chunkr data even if script gen fails
-        });
-    }
+                try {
+                    // Generate script from Chunkr data
+                    console.log("Generating script from Chunkr data...");
+                    const script = await generateVideoScript(taskData);
+                    
+                    // Generate video from script
+                    console.log("Generating video from script...");
+                    const videoResult = await generateVideo(script);
+                    
+                    return res.status(200).json({
+                        message: 'PDF processing, script generation, and video generation completed successfully',
+                        script: script,
+                        chunkr_data: taskData,
+                        video_url: videoResult.creatomateUrl,
+                        s3_video_url: videoResult.s3Url,
+                        s3_video_key: videoResult.s3Key
+                    });
+                } catch (error) {
+                    console.error('Error in script/video generation:', error);
+                    return res.status(500).json({ 
+                        error: 'Script or video generation failed',
+                        details: error.message,
+                        chunkr_data: taskData
+                    });
+                }
             }
         }
     } catch (error) {
         console.error('Error processing PDF:', error);
-        res.status(500).json({ error: 'Failed to process PDF' });
+        res.status(500).json({ error: 'Failed to process PDF', details: error.message });
     }
+};
 
-    return;
-
-
-    
-
-    console.log(" RAW Chunkr API Response:", text); // Print full response
-
-    try {
-        const data = JSON.parse(text); // Try parsing as JSON
-        console.log("Chunkr API Parsed Response:", data);
-
-        if (!response.ok) {
-            return res.status(500).json({ error: "Failed to process PDF", raw_response: data });
-        }
-
-        // ✅ Extract text from Chunkr's response
-        let extractedText = "";
-        if (data.output && data.output.chunks) {
-            data.output.chunks.forEach(chunk => {
-                chunk.segments.forEach(segment => {
-                    extractedText += segment.text + " ";
-                });
-            });
-        } else {
-            return res.status(500).json({ error: "Invalid Chunkr response format" });
-        }
-
-        console.log(" Extracted Text for Script:", extractedText.substring(0, 500) + "...");
-
-        // ✅ Send extracted text to OpenAI to generate script
-        const script = await generateVideoScript(data);
-
-        // ✅ Return the final script in JSON format
-        return res.status(200).json({
-            message: "Video script generated successfully",
-            script: script
-        });
-
-    } catch (error) {
-        console.error("🔥 Error Parsing JSON:", error);
-        return res.status(500).json({ error: "Invalid JSON response from Chunkr", raw_response: text });
-    }
-}
-
-
-// // Export Multer middleware for routes
-// exports.upload = upload;
+// Export Multer middleware
+exports.upload = upload;
 
 // const express = require("express");
 // const router = express.Router();

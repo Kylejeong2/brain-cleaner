@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -7,6 +5,7 @@ const bodyParser = require('body-parser');
 const pdftoroute = require('./routes/pdftobrainrot.routes');
 const uploadURL = require('./routes/uploadURL.routes');
 const authRoutes = require('./routes/auth.routes');
+const videosRoutes = require('./routes/videos.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +19,7 @@ app.use(bodyParser.json());
 app.use('/api/v1/pdftobrainrot', pdftoroute);
 app.use('/api/v1/upload-url', uploadURL);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/videos', videosRoutes);
 
 app.get('/', (req, res) => {
     res.send('Brain Cleaner Backend is running.');

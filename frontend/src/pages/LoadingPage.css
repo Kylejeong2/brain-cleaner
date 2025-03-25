@@ -1,36 +1,85 @@
-.loading-page {
+.home-container {
   min-height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
-.loading-content {
+.home-content {
   text-align: center;
-  color: white;
   padding: 2rem;
 }
 
+.home-content h1 {
+  font-size: 2.5rem;
+  color: #be9ecb;
+  margin-bottom: 1rem;
+}
+
+.home-content p {
+  font-size: 1.2rem;
+  color: white;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .get-started-btn {
-  padding: 12px 24px;
-  font-size: 1.2em;
-  border: none;
-  border-radius: 25px;
-  background-color: white;
-  color: #6e8efb;
-  cursor: pointer;
-  transition: transform 0.2s;
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: transparent;
+  color: white;
+  text-decoration: none;
+  border: 2px solid #be9ecb;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-family: "Overpass Mono", monospace;
 }
 
 .get-started-btn:hover {
-  transform: scale(1.05);
+  background: #be9ecb;
+  color: #22143a;
+  transform: translateY(-1px);
+}
+
+.home-container .home-content h1 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700; /* Replace <weight> with the desired value, e.g., 400, 500, 700 */
+  font-style: normal;
+}
+
+.home-container .home-content .cta-buttons .get-started-btn {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.subheading {
+  font-size: 16px;
+  color: white; /* Light purple, adjust as needed */
+  text-align: center;
+}
+
+.crossed-out {
+  position: relative;
+  display: inline-block;
+  color: white; /* Same color as text */
+}
+
+.crossed-out::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px; /* Thickness of the strikethrough */
+  background-color: white; /* A faded purple tone for softer effect */
+  transform: rotate(-5deg); /* Slight tilt for a more natural strike */
 }

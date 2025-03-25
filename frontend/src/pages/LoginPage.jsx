@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../App";
+import { GoogleLogin } from "@react-oauth/google";
 import "./LoginPage.css";
+
+const BACKEND_URL = import.meta.env.BACKEND_URL;
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login, register } = useAuth();
+  const { login, register, handleGoogleLogin } = useAuth();
   const [isRegistering, setIsRegistering] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -14,21 +17,59 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setError("");
+    setIsLoading(true);
+    try {
+      const result = await handleGoogleLogin(credentialResponse);
+      if (result.success) {
+        navigate("/main");
+      } else {
+        setError(result.error || "Google login failed");
+      }
+    } catch (err) {
+      console.error("Google auth error:", err);
+      setError("An unexpected error occurred during Google login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
+    if (!formData.email || !formData.password) {
+      setError("Email and password are required");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       if (isRegistering) {
-        const result = await register(formData.email, formData.password);
-        if (result.success) {
-          navigate("/main");
+        const response = await fetch(
+          "http://localhost:3000/api/v1/auth/register",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Instead of logging in directly, redirect to verification pending
+          navigate("/verify-pending", { state: { email: formData.email } });
         } else {
-          setError(result.error || "Registration failed");
+          setError(data.message || "Registration failed");
         }
       } else {
         const result = await login(formData.email, formData.password);
+
         if (result.success) {
           navigate("/main");
         } else {
@@ -36,81 +77,84 @@ const LoginPage = () => {
         }
       }
     } catch (err) {
-      setError("An unexpected error occurred");
+      console.error("Auth error:", err);
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const switchMode = () => {
+    setIsRegistering(!isRegistering);
+    setError("");
+    setFormData({ email: "", password: "" });
+  };
+
   return (
-    <div className="login-page">
-      <button className="back-button" onClick={() => navigate("/")}>
-        ← Back
-      </button>
-      <div className="login-form-container">
-        <h1>{isRegistering ? "Create Account" : "Login to Brain Cleaner"}</h1>
+    <div className="login-container">
+      <Link to="/" className="back-button">
+        back
+      </Link>
+      <div className="login-box">
+        <h2>{isRegistering ? "Create Account" : "Log In"}</h2>
+
+        <div className="google-login-container">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              setError("Google Login Failed");
+            }}
+            auto_select
+          />
+        </div>
+
+        <div className="separator">
+          <span>or</span>
+        </div>
+
         {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
+
+        <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
+              placeholder="Email"
               value={formData.email}
-              placeholder="Enter your email"
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              required
-              disabled={isLoading}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
+              placeholder="Password"
               value={formData.password}
-              placeholder="Enter your password"
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              required
-              disabled={isLoading}
             />
           </div>
-          <button type="submit" className="login-btn" disabled={isLoading}>
+          <button type="submit" disabled={isLoading}>
             {isLoading
-              ? isRegistering
-                ? "Creating Account..."
-                : "Logging in..."
+              ? "Loading..."
               : isRegistering
               ? "Create Account"
-              : "Login"}
+              : "Log In"}
           </button>
         </form>
+
         <div className="auth-switch">
-          {isRegistering ? (
-            <p>
-              Already have an account?{" "}
-              <button
-                className="text-button"
-                onClick={() => setIsRegistering(false)}
-              >
-                Login here
-              </button>
-            </p>
-          ) : (
-            <p>
-              Don't have an account?{" "}
-              <button
-                className="text-button"
-                onClick={() => setIsRegistering(true)}
-              >
-                Create one here
-              </button>
-            </p>
-          )}
+          <span>
+            {isRegistering
+              ? "Already have an account?"
+              : "Don't have an account?"}
+          </span>
+          <button onClick={switchMode}>
+            {isRegistering ? "Log In" : "Sign Up"}
+          </button>
         </div>
       </div>
     </div>

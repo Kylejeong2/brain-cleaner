@@ -1,0 +1,281 @@
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #f5f5f5;
+}
+
+.nav-link.active {
+  color: #be9ecb;
+  font-weight: 500;
+}
+
+/* User email and logout button */
+.user-email {
+  color: #be9ecb;
+  font-size: 0.95rem;
+  margin-right: 1.5rem;
+}
+
+.logout-btn {
+  padding: 0.5rem 1rem;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Page Title */
+.page-title {
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 2rem;
+  font-weight: 600;
+  color: white;
+}
+
+/* Video Grid */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 0 2rem 2rem;
+}
+
+.video-card {
+  background: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  width: 100%;
+  border: 2px solid #be9ecb;
+}
+
+.video-card:hover {
+  transform: translateY(-5px);
+}
+
+.video-thumbnail {
+  width: 100%;
+  position: relative;
+  background: transparent;
+}
+
+.video-thumbnail video {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+.video-title {
+  padding: 0;
+  font-size: 1.1rem;
+  margin: 0;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: transparent;
+  text-align: left;
+  max-width: 80%;
+}
+
+.video-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-top: 2px solid #be9ecb;
+  background: transparent;
+}
+
+.delete-video-btn {
+  background-color: transparent;
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.delete-video-btn:hover {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.saved-videos {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #22143a, #4c1d38);
+}
+
+.saved-videos .page-title {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  color: white;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 4rem auto;
+  color: #be9ecb;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(190, 158, 203, 0.3);
+  border-radius: 50%;
+  border-top-color: #be9ecb;
+  animation: spin 1s ease-in-out infinite;
+  margin: 15px 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* No videos state */
+.no-videos {
+  text-align: center;
+  padding: 3rem;
+  background-color: transparent;
+  border: 2px solid #be9ecb;
+  border-radius: 8px;
+  margin: 2rem auto;
+  max-width: 500px;
+}
+
+.no-videos h2 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.no-videos p {
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.create-link {
+  display: inline-block;
+  background-color: #be9ecb;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.create-link:hover {
+  background-color: #a07db1;
+}
+
+/* Error message styles */
+.error-message {
+  text-align: center;
+  margin: 4rem auto;
+  max-width: 500px;
+  color: #be9ecb;
+}
+
+.retry-btn {
+  padding: 0.5rem 1.5rem;
+  background-color: transparent;
+  color: white;
+  border: 2px solid #be9ecb;
+  font-weight: 400;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.retry-btn:hover {
+  background-color: #be9ecb;
+  color: #22143a;
+  transform: translateY(-1px);
+}
+
+/* No videos message */
+.no-videos-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 4rem auto;
+  color: #be9ecb;
+  text-align: center;
+}
+
+.no-videos-message h2 {
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.create-video-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.5rem 1.5rem;
+  background-color: transparent;
+  color: white;
+  border: 2px solid #be9ecb;
+  font-weight: 400;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.create-video-link:hover {
+  background-color: #be9ecb;
+  color: #22143a;
+  transform: translateY(-1px);
+}
